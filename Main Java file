@@ -1,0 +1,73 @@
+package com.example.dicegame;
+
+
+import androidx.appcompat.app.AppCompatActivity;
+
+
+import android.os.Bundle;
+import java.util.Random;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.Toast;
+
+
+
+
+public class MainActivity extends AppCompatActivity {
+
+    private Button diceRoll;
+    public static final Random RANDOM = new Random();
+    private ImageView dieP1, dieP2;
+
+    int playerWins= 0;
+    int houseWins = 0;
+    int diceRollCount =0;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    } setContentView(R.layout.activity_main);
+    diceRoll = (Button) findViewById(R.id.diceroll);
+    dieP1 = (ImageView) findViewById(R.id.diep1);
+    dieP2 = (ImageView) findViewById(R.id.diep2);
+
+    diceRoll.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick (View view) {
+            int number1 = randomDice();
+            int number2 = randomDice();
+            int sum = number1 + number2; // calculates sum of dice
+
+            // retrieve resources through get identifier method
+            int rsc1 = getResources().getIdentifier("die" + number1, "drawable", "com.example.dicegame");
+            int rsc2 = getResources().getIdentifier("die" + number2, "drawable", "com.example.dicegame");
+            dieP1.setImageResource(rsc1);
+            dieP2.setImageResource(rsc2);
+            diceRollCount ++;
+    }
+            // tells button what to do on first click
+             if (diceRollCount ==1){
+                 if (sum ==7 || sum== 11){
+                     Toast.makeText(getApplicationContext(), "You rolled a sum of: " +sum + "\nYou win!", Toast.LENGTH_SHORT).show();
+                 } playerWins ++; Toast.makeText(getApplicationContext(),"Player wins = " + playerWins, Toast.LENGTH_SHORT).show();
+             } // ends if statement
+             if (sum ==2 || sum==3 || sum ==12){ 
+                 Toast.makeText(getApplicationContext(), "Craps! You rolled a sum: "+ sum + "\nYou lose.", Toast.LENGTH_SHORT).show();
+                 houseWins ++; Toast.makeText(getApplicationContext(),"House wins = " + houseWins, Toast.LENGTH_SHORT).show();
+             } // ends if statement else 
+             if( sum ==4 || sum ==5 || sum==6 || sum==8|| sum== 9 || sum==10){ 
+                 Toast.makeText(getApplicationContext(),"You rolled a sum of: " + sum + "\nThis is your point value!", Toast.LENGTH_SHORT).show();
+                 int pointValue = sum; Toast.makeText(getApplicationContext(),"Roll " + pointValue + " again before you roll 7 to win.", Toast.LENGTH_SHORT).show();
+             } // ends else if statement
+         } // ends if statement 
+         
+        }}); 
+} // ends onCreate method 
+        
+        //method to generate random number 1-6 
+        public static int randomDice(){ 
+        return RANDOM.nextInt(6) + 1; 
+} // ends method 
+    
+} /// ends class MainActivity
